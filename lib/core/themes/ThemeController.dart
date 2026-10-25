@@ -28,11 +28,13 @@ class ThemeController extends GetxController {
     var prefs = await SharedPreferences.getInstance();
     if (isDarkMode.value) {
       prefs.setString(Varaibleconstent.mode, "Light");
-      Get.changeTheme(Themapp.weatherLightTheme);
+      // Get.changeTheme(Themapp.weatherLightTheme);
+      Get.changeThemeMode(ThemeMode.light);
       isDarkMode.value = false;
       currentGradient.value = AppColors.lightWeatherGradient;
     } else {
-      Get.changeTheme(Themapp.weatherTheme);
+      // Get.changeTheme(Themapp.weatherTheme);
+      Get.changeThemeMode(ThemeMode.dark);
       prefs.setString(Varaibleconstent.mode, "Dark");
       isDarkMode.value = true;
       currentGradient.value = AppColors.darkWeatherGradient;

@@ -99,7 +99,6 @@ class Permission {
   Future<dynamic> getLocation() async {
     bool serviceEnable;
     LocationPermission permission;
-
     serviceEnable = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnable) return "24".tr; //خدمة الموقع مغلقة
 
@@ -110,7 +109,6 @@ class Permission {
         return "25".tr; //تم رفض إذن الوصول إلى الموقع
       }
     }
-
     if (permission == LocationPermission.deniedForever) {
       return "26".tr; //تم رفض إذن الموقع بشكل دائم
     }

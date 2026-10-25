@@ -30,11 +30,9 @@ class Homcontroler extends GetxController {
   // دالة البحث عن الطقس باستخدام اسم المدينة
   Future<void> searchWeatherByCity(String cityName) async {
     if (cityName.trim().isEmpty) return;
-
     try {
-      isloding.value = true;
+      isloding(true);
       errorMessage.value = ''; // تصفير الأخطاء السابقة
-
       // تحويل اسم المدينة إلى إحداثيات (lat, lon)
       List<Location> locations = await Geocoding().locationFromAddress(
         cityName.trim(),
@@ -53,7 +51,7 @@ class Homcontroler extends GetxController {
     } catch (e) {
       errorMessage.value = "13".tr; // التعامل مع استثناء عدم العثور على العنوان
     } finally {
-      isloding.value = false;
+      isloding(false);
     }
     update();
   }

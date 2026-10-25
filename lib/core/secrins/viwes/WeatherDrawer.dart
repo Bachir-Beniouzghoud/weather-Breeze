@@ -23,10 +23,6 @@ class weatherDrawer extends StatelessWidget {
     // جلب TextTheme و ColorScheme من السيم الحالي للتطبيق
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    // return Obx(() {
-
-    // },)
-    // ;
     return Obx(() {
       return Container(
         decoration: BoxDecoration(
@@ -37,22 +33,22 @@ class weatherDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               // رأس القائمة (Drawer Header)
-              CoustomorDrawer.buildHeader(textTheme),
+              CoustomorDrawer.buildHeader(textTheme, C),
 
               // المواقع المفضلة
-              ListTile(
-                leading: const Icon(Icons.star, color: Colors.amber),
-                title: Text(
-                  "30".tr, // المواقع المفضلة
-                  style: textTheme.titleMedium,
-                ),
-                onTap: () {
-                  Get.back();
-                  // TODO: توجيه المستخدم لشاشة المواقع المفضلة
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.star, color: Colors.amber),
+              //   title: Text(
+              //     "30".tr, // المواقع المفضلة
+              //     style: textTheme.titleMedium,
+              //   ),
+              //   onTap: () {
+              //     Get.back();
+              //     // TODO: توجيه المستخدم لشاشة المواقع المفضلة
+              //   },
+              // ),
 
-              const Divider(),
+              // const Divider(),
 
               // اللغة (Language)
               ListTile(
@@ -94,14 +90,11 @@ class weatherDrawer extends StatelessWidget {
                     style: textTheme.titleMedium,
                   ),
                   value: themeController.isDarkMode == true,
-                  onChanged: (value)async {
-                   
-
-                   await themeController.toggleTheme();
+                  onChanged: (value) async {
+                    await themeController.toggleTheme();
                   },
                 ),
               ),
-
               // وحدة درجة الحرارة
               ListTile(
                 leading: const Icon(Icons.thermostat, color: Colors.redAccent),
@@ -111,9 +104,7 @@ class weatherDrawer extends StatelessWidget {
                   // إضافة دالة لتغيير وحدة درجة الحرارة
                 },
               ),
-
               Divider(),
-
               // حول التطبيق (About App)
               ListTile(
                 leading: const Icon(

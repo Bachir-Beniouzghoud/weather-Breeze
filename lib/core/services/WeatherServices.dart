@@ -32,8 +32,6 @@ class Weatherservices {
     if (resoult is ApiFailure) {
       return resoult;
     } else if (resoult is Map<String, dynamic>) {
-      print('Resoult+++++++++++');
-      print(resoult['list']);
       return Currentforecastdata.fromJson(resoult);
     } else {
       return ApiFailure(message: 'بيانات غير صالحة من السيرفر');

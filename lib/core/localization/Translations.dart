@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/root/internacionalization.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppTranslations extends Translations {
@@ -49,7 +46,9 @@ class AppTranslations extends Translations {
       "36": "Nassim Weather provides accurate real-time weather updates\n detailed temperature forecasts\n upcoming daily trends, and local climate insights in a simple and fast interface.",
       "37": "Temperature Unit",
       "38": "Dark Mode",
-      "39": "Search for a city..."
+      "39": "Search for a city...",
+      "40": "Cancel",
+      "41": "Fetch saved location weather data",
     },
     'ar': {
       '1': 'الرئيسية',
@@ -92,7 +91,9 @@ class AppTranslations extends Translations {
       "36": "تطبيق نسيم طقس يوفر لك متابعة دقيقة وتحديثات مباشرة لحالة الطقس\n بما في ذلك درجات الحرارة، توقعات الأيام القادمة\nوتفاصيل المناخ في منطقتك بأسلوب بسيط وسريع.",
       "37": 'وحدة الحرارة',
       "38": "الوضع الداكن",
-      "39":'ابحث عن مدينة...'
+      "39": 'ابحث عن مدينة...',
+      "40": "إلغاء",
+      "41": "جلب بينات طقس الموقع المحفوظ",
     },
   };
 }

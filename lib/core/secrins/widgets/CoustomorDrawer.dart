@@ -3,10 +3,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:newproject/constent/Varaibleconstent.dart';
+import 'package:newproject/core/controlers/HomControler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CoustomorDrawer {
-  static Widget buildHeader(TextTheme textTheme) {
+  static Widget buildHeader(TextTheme textTheme, Homcontroler Controler) {
     return DrawerHeader(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,6 +23,7 @@ class CoustomorDrawer {
           const SizedBox(height: 16),
           FutureBuilder<SharedPreferences>(
             future: SharedPreferences.getInstance(),
+
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Text(
@@ -42,7 +44,18 @@ class CoustomorDrawer {
                     size: 16,
                   ),
                   const SizedBox(width: 6),
-                  Text('$locality, $country', style: textTheme.bodyMedium),
+                  InkWell(
+                    onTap: () {
+                      if (country.isNotEmpty) {
+                        Controler.searchWeatherByCity(country);
+                        Get.back();
+                      }
+                    },
+                    child: Text(
+                      '$locality, $country',
+                      style: textTheme.bodyMedium,
+                    ),
+                  ),
                 ],
               );
             },

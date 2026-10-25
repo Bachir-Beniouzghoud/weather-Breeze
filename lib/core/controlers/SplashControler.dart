@@ -88,9 +88,10 @@ class Splashcontroler extends GetxController {
   final Internate _isconection = Internate();
   final Permission _permission = Permission();
 
-  var isLoading = true.obs;
-  var hasInternetError = false.obs;
-  var errorMessage = ''.obs;
+  RxBool isLoading = true.obs;
+  RxBool hasInternetError = false.obs;
+  RxBool isLocationError = false.obs;
+  RxString errorMessage = ''.obs;
 
   @override
   void onReady() async {
@@ -113,14 +114,19 @@ class Splashcontroler extends GetxController {
       return await Get.defaultDialog(
         title: "9".tr,
         middleText: "23".tr,
-        backgroundColor: AppColors.deepBlue, // يمكنك تخصيص الألوان حسب تطبيقك
+        backgroundColor: const Color.fromRGBO(
+          3,
+          26,
+          44,
+          1,
+        ), // يمكنك تخصيص الألوان حسب تطبيقك
         titleStyle: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
         middleTextStyle: const TextStyle(color: Colors.white70),
-        textConfirm: "موافق",
-        textCancel: "إلغاء",
+        textConfirm: "35".tr,
+        textCancel: "40".tr,
         confirmTextColor: Colors.white,
         buttonColor: Colors.blue,
         onConfirm: () async {
@@ -128,8 +134,6 @@ class Splashcontroler extends GetxController {
           if (cityResult is Placemark) {
             isSaved = await _permission.savePlacemarkToPrefs(cityResult);
             prefs.setBool(Varaibleconstent.isSaveLocation, isSaved!);
-            print("**********Save***");
-            print(prefs.getBool(Varaibleconstent.isSaveLocation));
           } else {
             prefs.setBool(Varaibleconstent.isSaveLocation, false);
             errorMessage(cityResult.toString());
@@ -154,32 +158,44 @@ class Splashcontroler extends GetxController {
       isLoading(false);
       hasInternetError(true);
       errorMessage('8'.tr);
-      return ;
+      return;
     }
 
     //  التحقق وجلب الموقع
     dynamic position = await _permission.getLocation();
-    if (position is String) {
-      isLoading(false);
-      Get.snackbar("9".tr, position, duration: const Duration(seconds: 3));
-
-      //   الانتقال للصفحة الرئيسية بقيم افتراضية
-      return ;
-    } else {
-      // نجاح / Success", // عنوان الـ Snackbar للحالة الناجحة
-      // "تم تحديد الموقع بنجاح / Location fetched successfully
-      Get.snackbar("29".tr, "28".tr, duration: const Duration(seconds: 3));
-      await showMassege(position);
-
-
-    }
-
-    //  انشاء دالة عرض رسالة للمستخدم يريد حفظ بينات الموقع ام لا
-
-    //  تمرير الإحداثيات مباشرة لدالة جلب المدينة
-
+    await location(position);
     // الانتقال للشاشة الرئيسية
     return _navigateToHome();
+  }
+
+  Future<void> location(dynamic position) async {
+    if (position is Position) {
+      isLocationError.value = false;
+      isLoading(false);
+      //عرض رسالة للمستخدم اذاكان موقع المحدد يريد حفضه نعم اولا
+      await showMassege(position);
+      return _navigateToHome(); //الانتقال الى الصفحة الرئسية
+    } else {
+      //يوجد خطا نعرضه للمستخدم
+      Get.snackbar(
+        "9".tr,
+        "${position.toString()} 41".tr,
+        duration: const Duration(seconds: 3),
+      );
+      // الانتقال بي  نات محفوظة ان وجدت
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool? isSaved = prefs.getBool(Varaibleconstent.isSaveLocation) ?? false;
+      if (isSaved) {
+        //   الانتقال للصفحة الرئيسية بقيم افتراضية
+        //get to home page
+        return _navigateToHome();
+      } else {
+        // اعادة المحاولة
+        errorMessage.value = position.toString();
+        isLocationError.value = true;
+        retry();
+      }
+    }
   }
 
   Future<void> retry() async {

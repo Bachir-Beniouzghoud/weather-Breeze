@@ -233,7 +233,6 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newproject/constent/AppColors.dart';
 import 'package:newproject/core/controlers/HomControler.dart';
 import 'package:newproject/core/modles/CurrentForecastData.dart';
 import 'package:newproject/core/modles/forecastItem.dart';
@@ -259,254 +258,246 @@ class HomPag extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       drawer: weatherDrawer(C: Controler, themeController: themeController),
-
-      //   builder: (controller) {
-      //     return Container();
-      //   },
-      // ),
-      // تغليف الشاشة بـ Obx لتتفاعل مع التدرج اللوني فور تغيير الثيم
-      body: GetBuilder<Homcontroler>(
-        builder: (controller) {
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              gradient:
-                  themeController.currentGradient.value, // التدرج التفاعلي
-            ),
-            child: SafeArea(
-              child: Obx(() {
-                if (Controler.isloding.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeAlign: 3.5,
-                      strokeCap: StrokeCap.round,
-                      strokeWidth: 4,
-                    ),
-                  );
-                } else {
-                  // جلب البيانات بطريقة آمنة داخل الـ Build لمنع أخطاء الـ late
-                  final data = Controler.currentWeatherData.value;
-                  final Currentforecastdata Datafrocce =
-                      Controler.currentforecastdata.value;
-                  return Controler.errorMessage.value.isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // الشريط العلوي (المدينة والتاريخ) مع تمرير textTheme
-                              Coustomorhom.buildeHider(
-                                scaffoldKey,
-                                data,
-                                textTheme,
-                                themeController,
-                                Controler: Controler,
+      body: Obx(
+           ()=> Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient:
+                themeController.currentGradient.value, // التدرج التفاعلي
+          ),
+          child: SafeArea(
+            child: Obx(() {
+              if (Controler.isloding.value) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    strokeAlign: 3.5,
+                    strokeCap: StrokeCap.round,
+                    strokeWidth: 4,
+                  ),
+                );
+              } else {
+                // جلب البيانات بطريقة آمنة داخل الـ Build لمنع أخطاء الـ late
+                final data = Controler.currentWeatherData.value;
+                final Currentforecastdata Datafrocce =
+                    Controler.currentforecastdata.value;
+                return Controler.errorMessage.value.isEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // الشريط العلوي (المدينة والتاريخ) مع تمرير textTheme
+                            Coustomorhom.buildeHider(
+                              scaffoldKey,
+                              data,
+                              textTheme,
+                              themeController,
+                              Controler: Controler,
+                            ),
+                            // Coustomorhom.buildeSersh(
+                            //   textTheme,
+                            //   themeController,
+                            //   Controler,
+                            // ),
+                            SizedBox(height: h * 0.0045),
+        
+                            // الوصف (يستخدم textTheme.bodyLarge ويتكيف تلقائياً)
+                            Text(
+                              data.weather?[0].description ?? '',
+                              style: textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.w400,
                               ),
-                              // Coustomorhom.buildeSersh(
-                              //   textTheme,
-                              //   themeController,
-                              //   Controler,
-                              // ),
-                              SizedBox(height: h * 0.0045),
-
-                              // الوصف (يستخدم textTheme.bodyLarge ويتكيف تلقائياً)
-                              Text(
-                                data.weather?[0].description ?? '',
-                                style: textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // قسم الحرارة الرئيسية
-                                      Coustomorhom.buildeTemp(data, textTheme),
-                                      const SizedBox(height: 10),
-
-                                      // توقعات الساعات
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(
-                                            24,
-                                          ),
-                                          border: Border.all(
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // قسم الحرارة الرئيسية
+                                    Coustomorhom.buildeTemp(data, textTheme),
+                                    const SizedBox(height: 10),
+        
+                                    // توقعات الساعات
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          24,
+                                        ),
+                                        border: Border.all(
+                                          color: isDark
+                                              ? Colors.white.withValues(
+                                                  alpha: 0.15,
+                                                )
+                                              : Colors.blue.withValues(
+                                                  alpha: 0.15,
+                                                ),
+                                          width: 1.2,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
                                             color: isDark
-                                                ? Colors.white.withValues(
-                                                    alpha: 0.15,
+                                                ? Colors.black.withValues(
+                                                    alpha: 0.35,
                                                   )
                                                 : Colors.blue.withValues(
-                                                    alpha: 0.15,
+                                                    alpha: 0.08,
                                                   ),
-                                            width: 1.2,
+                                            blurRadius: 20,
+                                            spreadRadius: 2,
+                                            offset: const Offset(0, 8),
                                           ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: isDark
-                                                  ? Colors.black.withValues(
-                                                      alpha: 0.35,
-                                                    )
-                                                  : Colors.blue.withValues(
-                                                      alpha: 0.08,
-                                                    ),
-                                              blurRadius: 20,
-                                              spreadRadius: 2,
-                                              offset: const Offset(0, 8),
-                                            ),
-                                          ],
-                                        ),
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: h * 0.35,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                Datafrocce.list != null &&
-                                                    Datafrocce.list!.length >= 9
-                                                ? 9
-                                                : (Datafrocce.list?.length ??
-                                                      0),
-                                            itemBuilder: (context, index) {
-                                              if (index == 0) {
-                                                return Coustomorhom.buildHourlyItem(
-                                                  textTheme: textTheme,
-                                                  time: '14'.tr,
-                                                  iconCod:
-                                                      data.weather?[0].icon,
-                                                  humidity: data
-                                                      .mainWeather
-                                                      ?.humidity,
-                                                  description: data
-                                                      .weather?[0]
-                                                      .description,
-                                                  windSpeed: data.wind?.speed,
-                                                );
-                                              }
-                                              final item =
-                                                  Datafrocce.list![index - 1];
+                                        ],
+                                      ),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: h * 0.35,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              Datafrocce.list != null &&
+                                                  Datafrocce.list!.length >= 9
+                                              ? 9
+                                              : (Datafrocce.list?.length ??
+                                                    0),
+                                          itemBuilder: (context, index) {
+                                            if (index == 0) {
                                               return Coustomorhom.buildHourlyItem(
                                                 textTheme: textTheme,
-                                                time: item.dtTxt,
-                                                iconCod: item.weather?[0].icon,
-                                                description: item
+                                                time: '14'.tr,
+                                                iconCod:
+                                                    data.weather?[0].icon,
+                                                humidity: data
+                                                    .mainWeather
+                                                    ?.humidity,
+                                                description: data
                                                     .weather?[0]
                                                     .description,
-                                                humidity: item
-                                                    .mainForecast
-                                                    ?.mainWeather
-                                                    ?.humidity,
-                                                windSpeed: item.wind?.speed,
+                                                windSpeed: data.wind?.speed,
                                               );
-                                            },
-                                          ),
+                                            }
+                                            final item =
+                                                Datafrocce.list![index - 1];
+                                            return Coustomorhom.buildHourlyItem(
+                                              textTheme: textTheme,
+                                              time: item.dtTxt,
+                                              iconCod: item.weather?[0].icon,
+                                              description: item
+                                                  .weather?[0]
+                                                  .description,
+                                              humidity: item
+                                                  .mainForecast
+                                                  ?.mainWeather
+                                                  ?.humidity,
+                                              windSpeed: item.wind?.speed,
+                                            );
+                                          },
                                         ),
                                       ),
-                                      const SizedBox(height: 20),
-
-                                      // توقعات الأيام
-                                      Container(
-                                        height: 410,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(
-                                            24,
-                                          ),
-                                          border: Border.all(
+                                    ),
+                                    const SizedBox(height: 20),
+        
+                                    // توقعات الأيام
+                                    Container(
+                                      height: 410,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          24,
+                                        ),
+                                        border: Border.all(
+                                          color: isDark
+                                              ? Colors.white.withValues(
+                                                  alpha: 0.15,
+                                                )
+                                              : Colors.blue.withValues(
+                                                  alpha: 0.15,
+                                                ),
+                                          width: 1.2,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
                                             color: isDark
-                                                ? Colors.white.withValues(
-                                                    alpha: 0.15,
+                                                ? Colors.black.withValues(
+                                                    alpha: 0.35,
                                                   )
                                                 : Colors.blue.withValues(
-                                                    alpha: 0.15,
+                                                    alpha: 0.08,
                                                   ),
-                                            width: 1.2,
+                                            blurRadius: 20,
+                                            spreadRadius: 2,
+                                            offset: const Offset(0, 8),
                                           ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: isDark
-                                                  ? Colors.black.withValues(
-                                                      alpha: 0.35,
-                                                    )
-                                                  : Colors.blue.withValues(
-                                                      alpha: 0.08,
-                                                    ),
-                                              blurRadius: 20,
-                                              spreadRadius: 2,
-                                              offset: const Offset(0, 8),
-                                            ),
-                                          ],
-                                        ),
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: h * 0.40,
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: Controler.removeReplit(
-                                              Datafrocce.list != null &&
-                                                      Datafrocce.list!.length >=
-                                                          40
-                                                  ? Datafrocce.list!
-                                                        .getRange(8, 40)
-                                                        .toList()
-                                                  : [],
-                                            ).length,
-                                            itemBuilder: (context, index) {
-                                              List<forecastItem> Hasdata =
-                                                  Controler.removeReplit(
-                                                    Datafrocce.list != null &&
-                                                            Datafrocce
-                                                                    .list!
-                                                                    .length >=
-                                                                40
-                                                        ? Datafrocce.list!
-                                                              .getRange(8, 40)
-                                                              .toList()
-                                                        : [],
-                                                  );
-                                              return Coustomorhom.buildDailyRow(
-                                                textTheme: textTheme,
-                                                Day: Hasdata[index].dtTxt,
-                                                iconCod: Hasdata[index]
-                                                    .weather?[0]
-                                                    .icon,
-                                                description: Hasdata[index]
-                                                    .weather?[0]
-                                                    .description,
-                                                humidity: Hasdata[index]
-                                                    .mainForecast
-                                                    ?.mainWeather
-                                                    ?.humidity,
-                                                windSpeed:
-                                                    Hasdata[index].wind?.speed,
-                                              );
-                                            },
-                                          ),
+                                        ],
+                                      ),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: h * 0.40,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: Controler.removeReplit(
+                                            Datafrocce.list != null &&
+                                                    Datafrocce.list!.length >=
+                                                        40
+                                                ? Datafrocce.list!
+                                                      .getRange(8, 40)
+                                                      .toList()
+                                                : [],
+                                          ).length,
+                                          itemBuilder: (context, index) {
+                                            List<forecastItem> Hasdata =
+                                                Controler.removeReplit(
+                                                  Datafrocce.list != null &&
+                                                          Datafrocce
+                                                                  .list!
+                                                                  .length >=
+                                                              40
+                                                      ? Datafrocce.list!
+                                                            .getRange(8, 40)
+                                                            .toList()
+                                                      : [],
+                                                );
+                                            return Coustomorhom.buildDailyRow(
+                                              textTheme: textTheme,
+                                              Day: Hasdata[index].dtTxt,
+                                              iconCod: Hasdata[index]
+                                                  .weather?[0]
+                                                  .icon,
+                                              description: Hasdata[index]
+                                                  .weather?[0]
+                                                  .description,
+                                              humidity: Hasdata[index]
+                                                  .mainForecast
+                                                  ?.mainWeather
+                                                  ?.humidity,
+                                              windSpeed:
+                                                  Hasdata[index].wind?.speed,
+                                            );
+                                          },
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                      : Coustomorhom.erorr(
-                          h,
-                          Controler.errorMessage.value,
-                          Controler.retry,
-                          textTheme,
-                        );
-                }
-              }),
-            ),
-          );
-        },
+                            ),
+                          ],
+                        ),
+                      )
+                    : Coustomorhom.erorr(
+                        h,
+                        Controler.errorMessage.value,
+                        Controler.retry,
+                        textTheme,
+                      );
+              }
+            }),
+          ),
+        ),
       ),
     );
   }

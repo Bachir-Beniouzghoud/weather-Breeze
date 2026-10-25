@@ -16,13 +16,14 @@ void main() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // prefs.setBool(Varaibleconstent.isSaveLocation, false);
   String? savedLang = prefs.getString(Varaibleconstent.codelangouge);
+  String? mode = prefs.getString(Varaibleconstent.mode);
   await initializeDateFormatting('ar', '');
-  runApp(MyApp(savedLang: savedLang));
+  runApp(MyApp(savedLang: savedLang, mode: mode));
 }
 
 class MyApp extends StatelessWidget {
-  final String? savedLang;
-  const MyApp({super.key, this.savedLang});
+  final String? savedLang, mode;
+  const MyApp({super.key, this.savedLang, this.mode});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -30,9 +31,11 @@ class MyApp extends StatelessWidget {
       initialBinding: spalshBinding(),
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
-      theme: Themapp.weatherLightTheme, // Default Light Theme
+      theme: Themapp.weatherLightTheme,
       darkTheme: Themapp.weatherTheme, // Default Dark Theme
-      themeMode: ThemeMode.system,
+      themeMode: (mode != null && mode == 'Dark')
+          ? ThemeMode.dark
+          : ThemeMode.light,
       // theme: Themapp.weatherTheme,
       locale: savedLang != null ? Locale(savedLang!) : Get.deviceLocale,
       getPages: Apppages.routes,
